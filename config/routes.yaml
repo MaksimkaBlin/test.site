@@ -1,0 +1,24 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+# config/routes.yaml
+
+# the "app_lucky_number" route name is not important yet
+app_lucky_number:
+  path: /lucky/number
+  controller: App\Controller\LuckyController::number
+
+pageHome:
+  path: /
+  controller: App\Controller\PageController::home
+
+pageArticle:
+   path: /articles
+   controller: App\Controller\PageController::articles
+
+pageSingleArticle:
+   path: /singleArticle
+   controller: App\Controller\PageController::singleArticle
+
+
