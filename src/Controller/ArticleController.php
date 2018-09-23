@@ -8,9 +8,8 @@
 
 namespace App\Controller;
 
-use Michelf\MarkdownInterface;
+use App\Service\MarkdownHelper;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Routing\Annotation\Route;
 //use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,14 +23,14 @@ class ArticleController extends AbstractController
      */
     public function homepage()
     {
-        return $this->render('article/homepage.html.twig');
+        return $this->render('article/homepage.html.twig')  ;
     }
 
 
     /**
      * @Route("/news/{slug}", name="article_show")
      */
-    public function show($slug, MarkdownInterface $markdown, AdapterInterface $cache)
+    public function show($slug, MarkdownHelper $markdownHelper)
     {
         $comments =[
             'sfsdfsdfsdfsdf',
@@ -52,13 +51,8 @@ Do mollit deserunt prosciutto laborum. Duis sint tongue quis nisi. Capicola qui 
 
 EOF;
 
-        $item = $cache->getItem('markdown_'.md5($articleContent));
-        if(!$item->isHit()){
-            $item->set($markdown->transform($articleContent));
-            $cache->save($item);
-        }
-        $articleContent = $item->get();
 
+        $articleContent =$markdownHelper->parse($articleContent);
 
 
         return $this->render('article/show.html.twig', [
